@@ -21,15 +21,14 @@ $(document).ready(function () {
         var startTime = $("#startTime").val();
         var freq = $("#freq").val();
 
-        var firstTimeConverted = moment(startTime, "HH:mm").subtract(1, "years");
-        var currentTime = moment();
-        var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
-        var tRemainder = diffTime % freq;
-        var minAway = freq - tRemainder;
+        var TimeConvert = moment(startTime, "HH:mm").subtract(1, "years");
+        var diff = moment().diff(moment(TimeConvert), "minutes");
+        var remainder = diff % freq;
+        var awayTime = freq - remainder;
 
-        var nextTrain = moment().add(minAway, "minutes");
+        var nextTrain = moment().add(awayTime, "minutes");
         var next = moment(nextTrain).format("HH:mm")
-        console.log(minAway)
+        console.log(awayTime)
         console.log(next)
 
         console.log("test");
@@ -47,7 +46,7 @@ $(document).ready(function () {
             startTime: startTime,
             Frequency: freq,
             trainTime: next,
-            nextTrain: minAway
+            nextTrain: awayTime
         };
 
         // Uploads employee data to the database
@@ -70,44 +69,43 @@ $(document).ready(function () {
 
 
 
+    database.ref().on("child_added", function (snapshot) {
+        console.log(childSnapshot.val());
 
 
-    // 3. Create Firebase event for adding employee to the database and a row in the html when a user adds an entry
-    database.ref().on("child_added", function (childSnapshot) {
-        var datainfo = childSnapshot.val();
-
-        console.log(datainfo.minAway)
-
-        // Store everything into a variable.
         var TrainName = childSnapshot.val().tName;
         var Destination = childSnapshot.val().Destination;
         var startTime = childSnapshot.val().startTime;
         var Frequency = childSnapshot.val().freq;
-
-        // Create the new row
-        var newRow = $("<tr>").append(
-            $("<td>").text(TrainName),
-            $("<td>").text(Destination),
-            $("<td>").text(startTime),
-            $("<td>").text(empMonths),
-            $("<td>").text(Frequency),
-            $("<td>").text(trainTime),
-            $("<td>").text(nextTrain)
-        );
-
-        // Append the new row to the table
-        $("#employee-table > tbody").append(newRow);
-    });
+        var nextTrain = childSnapshot.val().awayTime;
 
 
-    // database.ref().on("child_added", function (snapshot) {
-    //     var sv = snapshot.val();
-
-    //     console.log(sv.minAway)
-    //     $("table tbody").append("<tr><th>" + sv.TrainName + "</th><td>" + sv.Destination + "</td><td>" + sv.Frequency + "</td><td>" + sv.trainTime + "</td><td>" + sv.nextTrain + "</td></tr>");
 
 
-    // })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // var sv = snapshot.val();
+
+        // console.log(sv.minAway)
+        // $("table tbody").append("<tr><th>" + sv.TrainName + "</th><td>" + sv.Destination + "</td><td>" + sv.Frequency + "</td><td>" + sv.trainTime + "</td><td>" + sv.nextTrain + "</td></tr>");
+
+
+    })
 
 
 })
