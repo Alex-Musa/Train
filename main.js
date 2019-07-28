@@ -70,39 +70,9 @@ $(document).ready(function () {
 
 
     database.ref().on("child_added", function (snapshot) {
-        console.log(childSnapshot.val());
 
-
-        var TrainName = childSnapshot.val().tName;
-        var Destination = childSnapshot.val().Destination;
-        var startTime = childSnapshot.val().startTime;
-        var Frequency = childSnapshot.val().freq;
-        var nextTrain = childSnapshot.val().awayTime;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // var sv = snapshot.val();
-
-        // console.log(sv.minAway)
-        // $("table tbody").append("<tr><th>" + sv.TrainName + "</th><td>" + sv.Destination + "</td><td>" + sv.Frequency + "</td><td>" + sv.trainTime + "</td><td>" + sv.nextTrain + "</td></tr>");
+        var snap = snapshot.val();
+        $("table tbody").append("<tr><th>" + snap.TrainName + "</th><td>" + snap.Destination + "</td><td>" + snap.Frequency + "</td><td>" + snap.trainTime + "</td><td>" + snap.nextTrain + "</td></tr>");
 
 
     })
