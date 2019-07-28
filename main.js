@@ -54,12 +54,12 @@ $(document).ready(function () {
         database.ref().push(TrainInfo);
 
         // Logs everything to console
-        console.log(TrainInfo.tName);
+        console.log(TrainInfo.TrainName);
         console.log(TrainInfo.Destination);
         console.log(TrainInfo.startTime);
-        console.log(TrainInfo.freq);
-        console.log(TrainInfo.next);
-        console.log(TrainInfo.minAway);
+        console.log(TrainInfo.Frequency);
+        console.log(TrainInfo.trainTime);
+        console.log(TrainInfo.nextTrain);
 
         // Clears all of the text-boxes
         $("#Train-name-input").val("");
@@ -73,57 +73,41 @@ $(document).ready(function () {
 
 
     // 3. Create Firebase event for adding employee to the database and a row in the html when a user adds an entry
-    // database.ref().on("child_added", function (childSnapshot) {
-    //     console.log(childSnapshot.val());
+    database.ref().on("child_added", function (childSnapshot) {
+        var datainfo = childSnapshot.val();
 
-    //     // Store everything into a variable.
-    //     var tName = childSnapshot.val().tName;
-    //     var Destination = childSnapshot.val().Destination;
-    //     var startTime = childSnapshot.val().startTime;
-    //     var freq = childSnapshot.val().freq;
+        console.log(datainfo.minAway)
 
-    //     // Employee Info
-    //     console.log(tName);
-    //     console.log(Destination);
-    //     console.log(startTime);
-    //     console.log(freq);
+        // Store everything into a variable.
+        var TrainName = childSnapshot.val().tName;
+        var Destination = childSnapshot.val().Destination;
+        var startTime = childSnapshot.val().startTime;
+        var Frequency = childSnapshot.val().freq;
 
-    //     // Prettify the employee start
-    //     var empStartPretty = moment.unix(startTime).format("MM/DD/YYYY");
+        // Create the new row
+        var newRow = $("<tr>").append(
+            $("<td>").text(TrainName),
+            $("<td>").text(Destination),
+            $("<td>").text(startTime),
+            $("<td>").text(empMonths),
+            $("<td>").text(Frequency),
+            $("<td>").text(trainTime),
+            $("<td>").text(nextTrain)
+        );
 
-    //     // Calculate the months worked using hardcore math
-    //     // To calculate the months worked
-    //     var empMonths = moment().diff(moment(startTime, "X"), "months");
-    //     console.log(empMonths);
-
-    //     // Calculate the total billed rate
-    //     var empBilled = empMonths * empRate;
-    //     console.log(empBilled);
-
-    //     // Create the new row
-    //     var newRow = $("<tr>").append(
-    //         $("<td>").text(tName),
-    //         $("<td>").text(Destination),
-    //         $("<td>").text(startTime),
-    //         $("<td>").text(empMonths),
-    //         $("<td>").text(freq),
-    //         $("<td>").text(trainTime),
-    //         $("<td>").text(nextTrain)
-    //     );
-
-    //     // Append the new row to the table
-    //     $("#employee-table > tbody").append(newRow);
-    // });
+        // Append the new row to the table
+        $("#employee-table > tbody").append(newRow);
+    });
 
 
-    database.ref().on("child_added", function (snapshot) {
-        var sv = snapshot.val();
+    // database.ref().on("child_added", function (snapshot) {
+    //     var sv = snapshot.val();
 
-        console.log(sv.minAway)
-        $("table tbody").append("<tr><th>" + sv.tName + "</th><td>" + sv.Destination + "</td><td>" + sv.freq + "</td><td>" + sv.trainTime + "</td><td>" + sv.nextTrain + "</td></tr>");
+    //     console.log(sv.minAway)
+    //     $("table tbody").append("<tr><th>" + sv.TrainName + "</th><td>" + sv.Destination + "</td><td>" + sv.Frequency + "</td><td>" + sv.trainTime + "</td><td>" + sv.nextTrain + "</td></tr>");
 
 
-    })
+    // })
 
 
 })
